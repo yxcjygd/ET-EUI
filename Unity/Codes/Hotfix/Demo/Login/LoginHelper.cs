@@ -13,7 +13,7 @@ namespace ET
             try
             {
                 accountSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
-                a2CLoginAccount = (A2C_LoginAccount) await accountSession.Call(new C2A_LoginAccount() { AccountName = account, Password = password });
+                a2CLoginAccount = (A2C_LoginAccount)await accountSession.Call(new C2A_LoginAccount() { AccountName = account, Password = password });
             }
             catch (Exception e)
             {
@@ -29,8 +29,13 @@ namespace ET
             }
 
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
+            var accountInfoComponent = zoneScene.GetComponent<AccountInfoComponent>();
+            AccountInfoComponentSystem.SetToken(accountInfoComponent,a2CLoginAccount.Token);
+            AccountInfoComponentSystem.SetAccountId(accountInfoComponent,a2CLoginAccount.AccountId);
+            //zoneScene.GetComponent<AccountInfoComponent>().Token = a2CLoginAccount.Token; // I dont want LoginHelper to be friendclass of AccountInfoComponent, so commented out this 2 lines
+            //zoneScene.GetComponent<AccountInfoComponent>().AccountId = a2CLoginAccount.AccountId;
 
             return ErrorCode.ERR_Success;
-        } 
+        }
     }
 }
