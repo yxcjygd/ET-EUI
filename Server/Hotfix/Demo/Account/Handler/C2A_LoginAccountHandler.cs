@@ -89,6 +89,14 @@ namespace ET
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save<Account>(account);
                     }
 
+                    long accountSessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(account.Id);
+                    Session otherSession = Game.EventSystem.Get(accountSessionInstanceId) as Session;
+                    otherSession?.Send(new A2C_Disconnect(){Error = 0});
+                    otherSession?.Disconnect().Coroutine();
+                    session.DomainScene().GetComponent<AccountSessionsComponent>().Add(account.Id,session.InstanceId);
+                    session.AddComponent<AccountCheckOutTimeComponent, long>(account.Id);
+                    
+                    
                     string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue).ToString();
                     session.DomainScene().GetComponent<TokenComponent>().Remove(account.Id);
                     session.DomainScene().GetComponent<TokenComponent>().Add(account.Id,Token);
