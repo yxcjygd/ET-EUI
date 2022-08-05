@@ -42,7 +42,9 @@ namespace ET
                     scene.AddComponent<AccountSessionsComponent>();
                     scene.AddComponent<DBManagerComponent>();
                     break;
-                
+                case SceneType.LoginCenter:
+                    scene.AddComponent<LoginInfoRecordComponent>();
+                    break;
             }
 
             return scene;
