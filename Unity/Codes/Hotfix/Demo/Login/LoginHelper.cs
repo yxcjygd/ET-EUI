@@ -30,7 +30,9 @@ namespace ET
             }
 
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
-            zoneScene.AddComponent<SessionComponent>().Session.AddComponent<PingComponent>();
+            
+            zoneScene.GetComponent<SessionComponent>().Session.AddComponent<PingComponent>();
+            
             var accountInfoComponent = zoneScene.GetComponent<AccountInfoComponent>();
             AccountInfoComponentSystem.SetToken(accountInfoComponent,a2CLoginAccount.Token);
             AccountInfoComponentSystem.SetAccountId(accountInfoComponent,a2CLoginAccount.AccountId);

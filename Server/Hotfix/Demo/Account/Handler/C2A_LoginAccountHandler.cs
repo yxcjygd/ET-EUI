@@ -42,7 +42,7 @@ namespace ET
                 return;
             }
 
-            if (!Regex.IsMatch(request.Password.Trim(), @"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
+            if (!Regex.IsMatch(request.Password.Trim(), @"^[A-Za-z0-9]+$"))
             {
                 response.Error = ErrorCode.ERR_PasswordFormError;
                 reply();
@@ -83,7 +83,7 @@ namespace ET
                     {
                         account = session.AddChild<Account>();
                         account.AccountName = request.AccountName.Trim();
-                        account.AccountName = request.Password.Trim();
+                        account.Password = request.Password.Trim();
                         account.CreateTime = TimeHelper.ServerNow();
                         account.AccountType = (int)AccountType.General;
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save<Account>(account);
